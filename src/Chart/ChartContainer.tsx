@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Canvas from "./Canvas"
 type IState = {
     data?: string;
 }
@@ -11,7 +11,7 @@ type IProps = {
 
 const ChartContainer : React.FunctionComponent<IState & IProps> = ({randomProp, rp}) => {
   return (
-    <p>Hello world</p>
+    <Canvas />
   );
 }
 
