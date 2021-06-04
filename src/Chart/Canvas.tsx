@@ -34,30 +34,51 @@ const Canvas = (props: any) => {
     {
       mT: 0,
       height: 100,
+      low: 1000,
+      high: 2000,
+      open: 1300,
+      close: 1900
     },
     {
       mT: 35,
       height: 100,
+      low: 1300,
+      high: 2100,
+      open: 1900,
+      close: 800,
     },
     {
       mT: 70,
       height: 100,
+      low: 400,
+      high: 800,
+      open: 800,
+      close: 600
     },
   ]);
 
   
   const canvasRef = useRef(null);
   useEffect(() => {
+    
     const canvas: any = canvasRef.current;
     const context = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    //size
+    let high = data.sort((a,b)=>b.high-a.high)[0].high;
+    let low = data.sort((a,b)=>a.low-b.low)[0].low;
+    let heightCubicles = context.canvas.height/(high-low)  //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
+    console.log(high, low)
+    console.log(heightCubicles)
+    console.log((high-low))
+    console.log((high-low)*heightCubicles)
+    console.log()
     //Our first draw
     context.fillStyle = "black";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
     //total price range
-    let high = 1000;
-    let low = 0;
+    
     //accumulatedWidth
     let accumulatedWith = 0;
     let candleWidth = 30
@@ -67,9 +88,8 @@ const Canvas = (props: any) => {
         accumulatedWith += candleWidth;
       }
 
-      console.log((accumulatedWith+i.width)/2)
       drawCandle(context, accumulatedWith, i.mT, candleWidth, 100, "red");
-      drawLine(context, index > 0 ? accumulatedWith+(candleWidth/2) : (accumulatedWith+candleWidth)/2, i.mT, 1, 140, "red");
+      drawLine(context, index > 0 ? accumulatedWith+(candleWidth/2) : (accumulatedWith+candleWidth)/2, i.mT, 1, (i.high-i.low)*heightCubicles, "red");
     });
   }, [drawCandle, drawLine]);
 
