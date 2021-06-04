@@ -47,14 +47,14 @@ const Canvas = (props: any) => {
     },
     {
       low: 400,
-      high: 800,
+      high: 1000,
       open: 800,
       close: 600,
       x: 3,
     },
     {
       low: 450,
-      high: 1300,
+      high: 1900,
       open: 600,
       close: 1000,
       x: 4,
@@ -81,7 +81,7 @@ const Canvas = (props: any) => {
       if (open - close > 0) {
         return (high - prevClose) * heightCubicles;
       } else {
-        return (high - prevClose - open) * heightCubicles;
+        return (high - close) * heightCubicles;
       }
     }
   };
