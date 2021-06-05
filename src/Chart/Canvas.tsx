@@ -29,6 +29,32 @@ const drawLine = (
   ctx.fill();
 };
 
+const drawPriceLine = (ctx: any, maxHigh: any, minLow: any, heightCubicles: any, numberOfLines: any) => {
+  let heightPoints = ctx.canvas.height / (numberOfLines + 1);
+  let prices = (maxHigh - minLow) / (numberOfLines + 1)
+  let priceList = []
+
+  for (let i = 0; i <= numberOfLines + 1; i++) {
+    let price = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
+    priceList.push(price)
+    // console.log("price[" + i + "] " + (minLow + (prices * i)))
+    ctx.beginPath();
+    ctx.moveTo(0, (heightPoints * i));
+    ctx.lineTo(ctx.canvas.width, (heightPoints * i));
+    ctx.strokeStyle = "yellow"
+    ctx.stroke();
+  }
+  priceList.reverse()
+
+  for (let i = 0; i < priceList.length; i++) {
+      console.log(priceList[i])
+      ctx.font = "11px Ariel"
+      ctx.fillText(priceList[i], ctx.canvas.width - 30, (heightPoints * i)-5);
+      ctx.fillStyle = "lightblue";
+  }
+
+}
+
 const Canvas = (props: any) => {
   const [data, setData] = useState([
     {
@@ -134,6 +160,8 @@ const Canvas = (props: any) => {
     let accumulatedWith = 0;
     let candleWidth = 30;
 
+    /*Draw horizontal lines*/
+    drawPriceLine(context, maxHigh, minLow, heightCubicles, 13)
     //Our draw come here
     data.map((i: any, index) => {
       //Width is accumulated only after the first candle has been drawn
@@ -159,6 +187,8 @@ const Canvas = (props: any) => {
 
       /*To draw the tail of the candle*/
       drawLine(context, accumulatedWith + (candleWidth / 2), (maxHigh - i.high) * heightCubicles, 1, (i.high - i.low) * heightCubicles, getColor(i.open, i.close));
+
+
 
     });
   }, [drawCandle, drawLine]);
