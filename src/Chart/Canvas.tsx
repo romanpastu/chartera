@@ -47,45 +47,18 @@ const drawPriceLine = (ctx: any, maxHigh: any, minLow: any, heightCubicles: any,
   priceList.reverse()
 
   for (let i = 0; i < priceList.length; i++) {
-      console.log(priceList[i])
-      ctx.font = "11px Ariel"
-      ctx.fillText(priceList[i], ctx.canvas.width - 30, (heightPoints * i)-5);
-      ctx.fillStyle = "lightblue";
+    console.log(priceList[i])
+    ctx.font = "11px Ariel"
+    ctx.fillText(priceList[i], ctx.canvas.width - 30, (heightPoints * i) - 5);
+    ctx.fillStyle = "lightblue";
   }
 
 }
 
 const Canvas = (props: any) => {
-  const [data, setData] = useState([
-    {
-      low: 1000,
-      high: 2000,
-      open: 2000,
-      close: 1900,
-      x: 1,
-    },
-    {
-      low: 800,
-      high: 2100,
-      open: 1900,
-      close: 800,
-      x: 2,
-    },
-    {
-      low: 400,
-      high: 1000,
-      open: 800,
-      close: 600,
-      x: 3,
-    },
-    {
-      low: 450,
-      high: 1900,
-      open: 600,
-      close: 1000,
-      x: 4,
-    },
-  ]);
+  const [data, setData] = useState();
+
+  
   /*
   To get the height necessary to push down the candle body
   */
@@ -125,6 +98,7 @@ const Canvas = (props: any) => {
 
   const canvasRef = useRef(null);
   useEffect(() => {
+    setData(props.data)
     const canvas: any = canvasRef.current;
     const context = canvas.getContext("2d");
     canvas.width = window.innerWidth;
@@ -134,14 +108,14 @@ const Canvas = (props: any) => {
     //Gets the highest hit value
     let maxHigh = Math.max.apply(
       Math,
-      data.map((o) => {
+      props.data.map((o: any) => {
         return o.high;
       })
     );
     //Gets the lowest hit value
     let minLow = Math.min.apply(
       Math,
-      data.map((o) => {
+      props.data.map((o: any) => {
         return o.low;
       })
     );
@@ -163,7 +137,7 @@ const Canvas = (props: any) => {
     /*Draw horizontal lines*/
     drawPriceLine(context, maxHigh, minLow, heightCubicles, 13)
     //Our draw come here
-    data.map((i: any, index) => {
+    props.data.map((i: any, index: any) => {
       //Width is accumulated only after the first candle has been drawn
       if (index > 0) {
         accumulatedWith += candleWidth;
@@ -174,7 +148,7 @@ const Canvas = (props: any) => {
         context,
         accumulatedWith,
         calcTopBody(
-          data[index - 1]?.close,
+          props.data[index - 1]?.close,
           i.open,
           i.close,
           heightCubicles,
