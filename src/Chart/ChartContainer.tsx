@@ -1,3 +1,4 @@
+// @ts-ignore
 import React from 'react';
 import Canvas from "./Canvas"
 import { priceArray, test } from "./mockData"
@@ -6,12 +7,11 @@ type IState = {
 }
 
 type IProps = {
-    randomProp: string;
-    rp: string;
+    
     
 }
 
-const ChartContainer : React.FunctionComponent<IState & IProps> = ({randomProp, rp}) => {
+const ChartContainer : React.FunctionComponent<IState & IProps> = ({}) => {
   const [data, setData] = React.useState([])
   const [prevMonthStamp, setPrevMonthStamp] = React.useState<any>()
   React.useEffect(() => {
@@ -44,6 +44,7 @@ const ChartContainer : React.FunctionComponent<IState & IProps> = ({randomProp, 
 
   if(data.length > 0){
     return (
+      // @ts-ignore
       <Canvas data={convertData(data)} />
     );
   }else{
