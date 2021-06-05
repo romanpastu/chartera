@@ -1,3 +1,4 @@
+// @ts-ignore
 import { useRef, useEffect, useState } from "react";
 
 const drawCandle = (
@@ -166,7 +167,6 @@ const Canvas = (props: any) => {
 
     });
   }, [drawCandle, drawLine]);
-
   return <canvas ref={canvasRef} {...props} />;
 };
 
