@@ -1,5 +1,5 @@
 export let priceArray : any = [
-    [
+    [   
         1579737600000, //open time [0]
         "8682.77000000", //open [1]
         "8691.81000000", //high [2]
