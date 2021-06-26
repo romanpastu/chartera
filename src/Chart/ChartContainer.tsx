@@ -11,7 +11,7 @@ const ChartContainer: React.FC = () => {
 
   React.useEffect(() => {
     var d: any = new Date();
-    d.setMonth(d.getMonth() - 2);
+    d.setMonth(d.getMonth() - 30);
     d.setHours(0, 0, 0, 0);
     setPrevMonthStamp((d / 1000 | 0) * 1000); //timestamp of a month ago
   }, [])
