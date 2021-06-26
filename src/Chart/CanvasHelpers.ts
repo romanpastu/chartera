@@ -59,11 +59,11 @@ export const drawLine = (
 /*Draws the horizontal price lines*/
 
 export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightCubicles: number, numberOfLines: number) => {
-    let heightPoints : number = ctx.canvas.height / (numberOfLines + 1);
+    let heightPoints: number = ctx.canvas.height / (numberOfLines + 1);
     let priceList: Array<number> = []
     //Draws the lines
     for (let i = 0; i <= numberOfLines + 1; i++) {
-        let price = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
+        let price: number = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
         priceList.push(price)
         // console.log("price[" + i + "] " + (minLow + (prices * i)))
         ctx.beginPath();
@@ -78,27 +78,29 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
     priceList.map((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
-        let price = Math.trunc(i).toString()
-        let rightMargin;
+        let price: string = Math.trunc(i).toString()
+        let rightMargin: number;
 
-        if(price.length === 5){
+        if (price.length === 5) {
             rightMargin = ctx.canvas.width - 35
-        }else if(price.length === 4){
+        } else if (price.length === 4) {
             rightMargin = ctx.canvas.width - 29
-        }else if(price.length === 3){
+        } else if (price.length === 3) {
             rightMargin = ctx.canvas.width - 24
-        }else if(price.length === 2){
+        } else if (price.length === 2) {
             rightMargin = ctx.canvas.width - 23
-        }else if(price.length === 6){
+        } else if (price.length === 6) {
             rightMargin = ctx.canvas.width - 40
+        } else {
+            rightMargin = ctx.canvas.width - 15
         }
 
-        if(index === 0){
+        if (index === 0) {
             ctx.fillText(price, rightMargin, (heightPoints * index) + 12);
-        }else{
+        } else {
             ctx.fillText(price, rightMargin, (heightPoints * index) - 5);
         }
-        
+
     })
 }
 
