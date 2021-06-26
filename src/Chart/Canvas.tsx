@@ -9,7 +9,16 @@ type dataObj = {
     close: number
 }
 
-const Canvas = (props: any) => {
+interface IProps {
+  data : Array<{
+    low: number,
+    high: number,
+    open: number,
+    close: number
+  }>
+}
+
+const Canvas: React.FC<IProps> = (props) => {
   const [data, setData] = useState<Array<{
     low: number,
     high: number,
@@ -62,7 +71,7 @@ const Canvas = (props: any) => {
 
     let candlesToIgnore = 0;
     if(candleWidth) candlesToIgnore = 50/candleWidth
-    
+
     //Draw the candles
     data && data.filter((i,index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
 
