@@ -6,8 +6,7 @@ type dataObj = {
     low: number,
     high: number,
     open: number,
-    close: number,
-    index: number
+    close: number
 }
 
 const Canvas = (props: any) => {
@@ -15,8 +14,7 @@ const Canvas = (props: any) => {
     low: number,
     high: number,
     open: number,
-    close: number,
-    index: number
+    close: number
   }>>();
   const [candleWidth, setCandleWidth] = useState<number>();
 
@@ -62,8 +60,12 @@ const Canvas = (props: any) => {
     /*Draw horizontal lines*/
     drawPriceLine(context, maxHigh, minLow, heightCubicles, 13)
 
+    let candlesToIgnore = 0;
+    if(candleWidth) candlesToIgnore = 50/candleWidth
+    
     //Draw the candles
-    props.data.map((i: dataObj, index: number) => {
+    data && data.filter((i,index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
+
       //Width is accumulated only after the first candle has been drawn
       if (index > 0 && candleWidth) {
         accumulatedWith += candleWidth;
@@ -74,7 +76,7 @@ const Canvas = (props: any) => {
         context,
         accumulatedWith,
         calcTopBody(
-          props.data[index - 1]?.close,
+          props.data[index - (candlesToIgnore+1)]?.close,
           i.open,
           i.close,
           heightCubicles,

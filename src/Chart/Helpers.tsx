@@ -5,7 +5,6 @@ export const convertData = (data: (string | number)[][]) => {
           high: Number(x[2]),
           open: Number(x[1]),
           close: Number(x[4]),
-          x: index
         }
       })
 }
