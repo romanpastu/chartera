@@ -59,9 +59,8 @@ export const drawLine = (
 /*Draws the horizontal price lines*/
 
 export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightCubicles: number, numberOfLines: number) => {
-    let heightPoints = ctx.canvas.height / (numberOfLines + 1);
-    let priceList = []
-
+    let heightPoints : number = ctx.canvas.height / (numberOfLines + 1);
+    let priceList: Array<number> = []
     //Draws the lines
     for (let i = 0; i <= numberOfLines + 1; i++) {
         let price = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
@@ -76,10 +75,30 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
     priceList.reverse()
 
     //Draws the prices fonts
-    priceList.map((i, index) => {
-        ctx.font = "11px Ariel"
-        ctx.fillText(i, ctx.canvas.width - 30, (heightPoints * index) - 5);
-        ctx.fillStyle = "lightblue";
+    priceList.map((i: number, index: number) => {
+        ctx.font = "11px Arial"
+        ctx.fillStyle = "orange";
+        let price = Math.trunc(i).toString()
+        let rightMargin;
+
+        if(price.length === 5){
+            rightMargin = ctx.canvas.width - 35
+        }else if(price.length === 4){
+            rightMargin = ctx.canvas.width - 29
+        }else if(price.length === 3){
+            rightMargin = ctx.canvas.width - 24
+        }else if(price.length === 2){
+            rightMargin = ctx.canvas.width - 23
+        }else if(price.length === 6){
+            rightMargin = ctx.canvas.width - 40
+        }
+
+        if(index === 0){
+            ctx.fillText(price, rightMargin, (heightPoints * index) + 12);
+        }else{
+            ctx.fillText(price, rightMargin, (heightPoints * index) - 5);
+        }
+        
     })
 }
 
