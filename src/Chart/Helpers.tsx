@@ -1,6 +1,3 @@
-import dayjs from 'dayjs'
-dayjs().format()
-
 export const convertData = (data: (string | number)[][]) => {
   return data.map((x: (string | number)[], index: number) => {
     return {
