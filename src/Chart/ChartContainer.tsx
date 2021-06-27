@@ -4,7 +4,7 @@ import React from 'react';
 import Canvas from "./Canvas"
 import { convertData } from "./Helpers"
 import {binanceApi, corsProxy} from "../constants"
-
+import Spinner from "../Spinner/Spinner"
 const ChartContainer: React.FC = () => {
   const [data, setData] = React.useState<unknown>([])
   const [prevMonthStamp, setPrevMonthStamp] = React.useState<number>()
@@ -38,7 +38,7 @@ const ChartContainer: React.FC = () => {
       <Canvas data={convertData(data)} />
     );
   } else {
-    return null
+    return <Spinner />
   }
 
 }
