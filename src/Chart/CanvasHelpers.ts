@@ -60,7 +60,7 @@ export const drawLine = (
 
 /*Draws the horizontal price lines*/
 
-export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightCubicles: number, numberOfLines: number) => {
+export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberOfLines: number) => {
     let heightPoints: number = ctx.canvas.height / (numberOfLines + 1);
     let priceList: Array<number> = []
     //Draws the lines
@@ -109,7 +109,7 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
 
 
 /*Draws the vertical time lines*/
-export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCubicles: number, numberOfLines: number, skippedDays: number) => {
+export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberOfLines: number, skippedDays: number) => {
     let widthPoints: number = ctx.canvas.width / (numberOfLines + 1);
     let timeList: Array<number> = []
 

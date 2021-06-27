@@ -73,7 +73,7 @@ const Canvas: React.FC<IProps> = (props) => {
     let accumulatedWith: number = 0;
 
     /*Draw horizontal lines*/
-    if (data) drawPriceLine(context, maxHigh, minLow, heightCubicles, horizontalPriceLines)
+    if (data) drawPriceLine(context, maxHigh, minLow, horizontalPriceLines)
 
 
 
@@ -82,7 +82,7 @@ const Canvas: React.FC<IProps> = (props) => {
     if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth
 
     /*Draw timestamp lines*/
-    drawTimeLine(context, maxTime, minTime, widthCubciles, verticalPriceLines, candlesToIgnore)
+    drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore)
 
     //Draw the candles
     data && data.filter((i, index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
