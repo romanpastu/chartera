@@ -18,9 +18,11 @@ const ChartContainer: React.FC = () => {
 
 
   React.useEffect(() => {
+    let url = 'https://binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d'
+    let proxyUrl = "https://cors-anywhere.herokuapp.com/"
     axios({
       method: 'get',
-      url: 'https://binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d'
+      url: proxyUrl+url
     }).then(res => {
       if (prevMonthStamp) {
         setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp))
