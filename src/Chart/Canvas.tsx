@@ -27,23 +27,19 @@ const Canvas: React.FC<IProps> = (props) => {
     open: number,
     close: number,
     openTime: number
-  }>>();
+  }>>(props.data);
   const [candleWidth, setCandleWidth] = useState<number>();
 
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    setData(props.data)
-  }, [])
-
-  useEffect(() => {
     const canvas: any = canvasRef.current;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    if (data) {
+    if (data && data.length !== 0) {
       setCandleWidth(canvas.width / data.length)
     }
-  }, [data && data.length != 0])
+  }, [data])
 
   useEffect(() => {
     const canvas: any = canvasRef.current;
@@ -52,13 +48,13 @@ const Canvas: React.FC<IProps> = (props) => {
     canvas.height = window.innerHeight;
 
     //Gets the highest hit value
-    let maxHigh: number = Math.max(...props.data.map((o: dataObj) => { return o.high; }));
+    let maxHigh: number = Math.max(...data.map((o: dataObj) => { return o.high; }));
     //Gets the lowest hit value
-    let minLow: number = Math.min(...props.data.map((o: dataObj) => { return o.low; }));
+    let minLow: number = Math.min(...data.map((o: dataObj) => { return o.low; }));
     //Gets the last time
-    let maxTime: number = Math.max(...props.data.map((o: dataObj) => { return o.openTime }))
+    let maxTime: number = Math.max(...data.map((o: dataObj) => { return o.openTime }))
     //Gets the lowest time
-    let minTime: number = Math.min(...props.data.map((o: dataObj) => { return o.openTime; }));
+    let minTime: number = Math.min(...data.map((o: dataObj) => { return o.openTime; }));
     /*
     The size of each unit of height 
     To get sized based on   (price1-price2)*heightCubicles
@@ -76,8 +72,6 @@ const Canvas: React.FC<IProps> = (props) => {
     if (data) drawPriceLine(context, maxHigh, minLow, horizontalPriceLines)
 
 
-
-
     let candlesToIgnore = 0;
     if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth
 
@@ -85,15 +79,15 @@ const Canvas: React.FC<IProps> = (props) => {
     drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore)
 
     //Draw the candles
-    data && data.filter((i, index) => index >= candlesToIgnore).forEach((i: dataObj, index: number) => {
+    data && data.length > 0 && data.filter((i, index) => index >= candlesToIgnore).forEach((i: dataObj, index: number) => {
 
       //Width is accumulated only after the first candle has been drawn
       if (index > 0 && candleWidth) {
         accumulatedWith += candleWidth;
       }
       if (candleWidth) {
-        let bodyHeight : number = Math.abs((i.open - i.close) * heightCubicles)
-        let tailHeight : number = (i.high - i.low) * heightCubicles
+        let bodyHeight: number = Math.abs((i.open - i.close) * heightCubicles)
+        let tailHeight: number = (i.high - i.low) * heightCubicles
         /*To draw the body of the candle*/
         drawCandle(
           context,
@@ -111,13 +105,13 @@ const Canvas: React.FC<IProps> = (props) => {
         );
 
         /*To draw the tail of the candle*/
-        let tailMarginLeft : number = accumulatedWith + (candleWidth / 2)
-        let tailMarginTop : number = (maxHigh - i.high) * heightCubicles
+        let tailMarginLeft: number = accumulatedWith + (candleWidth / 2)
+        let tailMarginTop: number = (maxHigh - i.high) * heightCubicles
         drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
       }
 
     })
-  }, [candleWidth && data && data.length != 0])
+  }, [candleWidth, data])
 
   return <canvas ref={canvasRef} {...props} />;
 }

@@ -133,13 +133,13 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
     ctx.stroke();
 
     //Draws the time fonts
-    timeList.map((i: number, index: number) => {
+    timeList.forEach((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
         let time: number = i
 
-        if (index != timeList.length - 1) {
-            //time + 18days delay
+        if (index !== timeList.length - 1) {
+            //time + delay of X days based on the right margin
             ctx.fillText(getDate(time + (skippedDays* 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
         } else if (index === timeList.length - 1) {
             ctx.fillText(getDate(time), ((widthPoints * index) - ChartRightMargin), ctx.canvas.height - 20)
