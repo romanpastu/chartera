@@ -131,14 +131,12 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCu
     ctx.lineTo(ctx.canvas.width - (ChartRightMargin+2), ctx.canvas.width)
     ctx.strokeStyle = "white"
     ctx.stroke();
-    console.log(timeList)
 
     //Draws the time fonts
     timeList.map((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
         let time: number = i
-        console.log("time: ", time)
 
         if (index != timeList.length - 1) {
             //time + 18days delay

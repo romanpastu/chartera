@@ -52,13 +52,13 @@ const Canvas: React.FC<IProps> = (props) => {
     canvas.height = window.innerHeight;
 
     //Gets the highest hit value
-    let maxHigh: number = Math.max(...props.data.map((o: any) => { return o.high; }));
+    let maxHigh: number = Math.max(...props.data.map((o: dataObj) => { return o.high; }));
     //Gets the lowest hit value
-    let minLow: number = Math.min(...props.data.map((o: any) => { return o.low; }));
+    let minLow: number = Math.min(...props.data.map((o: dataObj) => { return o.low; }));
     //Gets the last time
-    let maxTime: number = Math.max(...props.data.map((o: any) => { return o.openTime }))
+    let maxTime: number = Math.max(...props.data.map((o: dataObj) => { return o.openTime }))
     //Gets the lowest time
-    let minTime: number = Math.min(...props.data.map((o: any) => { return o.openTime; }));
+    let minTime: number = Math.min(...props.data.map((o: dataObj) => { return o.openTime; }));
     /*
     The size of each unit of height 
     To get sized based on   (price1-price2)*heightCubicles
@@ -83,7 +83,7 @@ const Canvas: React.FC<IProps> = (props) => {
 
     /*Draw timestamp lines*/
     drawTimeLine(context, maxTime, minTime, widthCubciles, verticalPriceLines, candlesToIgnore)
-    
+
     //Draw the candles
     data && data.filter((i, index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
 

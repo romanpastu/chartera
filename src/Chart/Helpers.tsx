@@ -19,7 +19,5 @@ export const getDate = (stamp: number) => {
   let day = date.getDate();
   let year = date.getFullYear();
   let formattedTime = day + '/' + month + '/' + year;
-
-  console.log(formattedTime)
   return formattedTime
 }
