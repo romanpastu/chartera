@@ -1,3 +1,5 @@
+import { getDate } from "./Helpers"
+
 /*
   To get the height necessary to push down the candle body
   */
@@ -72,6 +74,7 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
         ctx.strokeStyle = "yellow"
         ctx.stroke();
     }
+
     priceList.reverse()
 
     //Draws the prices fonts
@@ -102,6 +105,49 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
         }
 
     })
+}
+
+
+/*Draws the vertical time lines*/
+export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCubicles: number, numberOfLines: number) => {
+    let widthPoints: number = ctx.canvas.width / (numberOfLines + 1);
+    let timeList: Array<number> = []
+
+    //Draws the lines
+    for (let i = 0; i <= numberOfLines + 1; i++) {
+        let time: number = (minTime) + ((widthPoints * i) * ((maxTime - minTime) / ctx.canvas.width))
+        timeList.push(time)
+        ctx.beginPath();
+        ctx.moveTo((widthPoints * i), 0)
+        ctx.lineTo((widthPoints * i), ctx.canvas.width)
+        ctx.strokeStyle = "yellow"
+        ctx.stroke();
+    }
+
+    //current price
+    ctx.beginPath();
+    ctx.setLineDash([5]);
+    ctx.moveTo(ctx.canvas.width-52, 0)
+    ctx.lineTo(ctx.canvas.width-52, ctx.canvas.width)
+    ctx.strokeStyle = "white"
+    ctx.stroke();
+    console.log(timeList)
+
+    //Draws the time fonts
+    timeList.map((i: number, index: number) => {
+        ctx.font = "11px Arial"
+        ctx.fillStyle = "orange";
+        let time: number = i
+        console.log("time: ",time)
+
+        if (index != timeList.length - 1) {
+            ctx.fillText(getDate(time), (widthPoints * index) + 5, ctx.canvas.height - 4)
+        } else if (index === timeList.length - 1) {
+            ctx.fillText(getDate(time), ((widthPoints * index) - 50), ctx.canvas.height - 20)
+        }
+    })
+
+
 }
 
 /*
