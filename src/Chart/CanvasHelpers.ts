@@ -78,7 +78,7 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberO
     priceList.reverse()
 
     //Draws the prices fonts
-    priceList.map((i: number, index: number) => {
+    priceList.forEach((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
         let price: string = Math.trunc(i).toString()
@@ -119,7 +119,7 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
         timeList.push(time)
         ctx.beginPath();
         ctx.moveTo((widthPoints * i), 0)
-        ctx.lineTo((widthPoints * i), ctx.canvas.width)
+        ctx.lineTo((widthPoints * i), ctx.canvas.height)
         ctx.strokeStyle = "yellow"
         ctx.stroke();
     }
@@ -128,7 +128,7 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
     ctx.beginPath();
     ctx.setLineDash([5]);
     ctx.moveTo(ctx.canvas.width - (ChartRightMargin+4), 0)
-    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+4), ctx.canvas.width)
+    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+4), ctx.canvas.height)
     ctx.strokeStyle = "white"
     ctx.stroke();
 

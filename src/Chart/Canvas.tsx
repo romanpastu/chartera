@@ -85,7 +85,7 @@ const Canvas: React.FC<IProps> = (props) => {
     drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore)
 
     //Draw the candles
-    data && data.filter((i, index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
+    data && data.filter((i, index) => index >= candlesToIgnore).forEach((i: dataObj, index: number) => {
 
       //Width is accumulated only after the first candle has been drawn
       if (index > 0 && candleWidth) {
@@ -99,7 +99,7 @@ const Canvas: React.FC<IProps> = (props) => {
           context,
           accumulatedWith,
           calcTopBody(
-            props.data[index - (candlesToIgnore + 1)]?.close,
+            data[index - (candlesToIgnore + 1)]?.close,
             i.open,
             i.close,
             heightCubicles,
