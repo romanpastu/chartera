@@ -20,7 +20,7 @@ const ChartContainer: React.FC = () => {
   React.useEffect(() => {
     axios({
       method: 'get',
-      url: 'http://binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d'
+      url: 'https://binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d'
     }).then(res => {
       if (prevMonthStamp) {
         setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp))
