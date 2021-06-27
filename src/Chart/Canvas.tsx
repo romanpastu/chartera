@@ -1,7 +1,7 @@
 // @ts-ignore
 import { useRef, useEffect, useState } from "react";
 import { calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine } from "./CanvasHelpers"
-
+import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from "./constants"
 type dataObj = {
   low: number,
   high: number,
@@ -73,15 +73,17 @@ const Canvas: React.FC<IProps> = (props) => {
     let accumulatedWith: number = 0;
 
     /*Draw horizontal lines*/
-    if(data) drawPriceLine(context, maxHigh, minLow, heightCubicles, 13)
-    
+    if (data) drawPriceLine(context, maxHigh, minLow, heightCubicles, horizontalPriceLines)
 
-    /*Draw timestamp lines*/
-    drawTimeLine(context, maxTime, minTime, widthCubciles, 3)
+
+
 
     let candlesToIgnore = 0;
-    if (candleWidth) candlesToIgnore = 50 / candleWidth
+    if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth
 
+    /*Draw timestamp lines*/
+    drawTimeLine(context, maxTime, minTime, widthCubciles, verticalPriceLines, candlesToIgnore)
+    
     //Draw the candles
     data && data.filter((i, index) => index >= candlesToIgnore).map((i: dataObj, index: number) => {
 

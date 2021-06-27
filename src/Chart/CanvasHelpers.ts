@@ -1,5 +1,5 @@
 import { getDate } from "./Helpers"
-
+import {ChartRightMargin} from "./constants";
 /*
   To get the height necessary to push down the candle body
   */
@@ -109,7 +109,7 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, heightC
 
 
 /*Draws the vertical time lines*/
-export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCubicles: number, numberOfLines: number) => {
+export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCubicles: number, numberOfLines: number, skippedDays: number) => {
     let widthPoints: number = ctx.canvas.width / (numberOfLines + 1);
     let timeList: Array<number> = []
 
@@ -127,8 +127,8 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCu
     //current price
     ctx.beginPath();
     ctx.setLineDash([5]);
-    ctx.moveTo(ctx.canvas.width - 52, 0)
-    ctx.lineTo(ctx.canvas.width - 52, ctx.canvas.width)
+    ctx.moveTo(ctx.canvas.width - (ChartRightMargin+2), 0)
+    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+2), ctx.canvas.width)
     ctx.strokeStyle = "white"
     ctx.stroke();
     console.log(timeList)
@@ -142,9 +142,9 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCu
 
         if (index != timeList.length - 1) {
             //time + 18days delay
-            ctx.fillText(getDate(time + (18 * 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
+            ctx.fillText(getDate(time + (skippedDays* 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
         } else if (index === timeList.length - 1) {
-            ctx.fillText(getDate(time), ((widthPoints * index) - 50), ctx.canvas.height - 20)
+            ctx.fillText(getDate(time), ((widthPoints * index) - ChartRightMargin), ctx.canvas.height - 20)
         }
     })
 
