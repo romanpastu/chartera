@@ -77,7 +77,7 @@ const Canvas: React.FC<IProps> = (props) => {
     
 
     /*Draw timestamp lines*/
-    drawTimeLine(context, maxTime, minTime, widthCubciles, 3)
+    drawTimeLine(context, maxTime, minTime, widthCubciles, 9)
 
     let candlesToIgnore = 0;
     if (candleWidth) candlesToIgnore = 50 / candleWidth

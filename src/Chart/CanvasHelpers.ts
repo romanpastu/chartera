@@ -127,8 +127,8 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCu
     //current price
     ctx.beginPath();
     ctx.setLineDash([5]);
-    ctx.moveTo(ctx.canvas.width-52, 0)
-    ctx.lineTo(ctx.canvas.width-52, ctx.canvas.width)
+    ctx.moveTo(ctx.canvas.width - 52, 0)
+    ctx.lineTo(ctx.canvas.width - 52, ctx.canvas.width)
     ctx.strokeStyle = "white"
     ctx.stroke();
     console.log(timeList)
@@ -138,10 +138,11 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, widthCu
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
         let time: number = i
-        console.log("time: ",time)
+        console.log("time: ", time)
 
         if (index != timeList.length - 1) {
-            ctx.fillText(getDate(time), (widthPoints * index) + 5, ctx.canvas.height - 4)
+            //time + 18days delay
+            ctx.fillText(getDate(time + (18 * 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
         } else if (index === timeList.length - 1) {
             ctx.fillText(getDate(time), ((widthPoints * index) - 50), ctx.canvas.height - 20)
         }

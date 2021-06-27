@@ -14,7 +14,6 @@ export const convertData = (data: (string | number)[][]) => {
 }
 
 export const getDate = (stamp: number) => {
-  console.log(stamp)
   let date: any = new Date(stamp )
   let month = date.getMonth()+1;
   let day = date.getDate();
