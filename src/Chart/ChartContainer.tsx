@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import Canvas from "./Canvas"
 import { convertData } from "./Helpers"
-
+import {binanceApi, corsProxy} from "../constants"
 
 const ChartContainer: React.FC = () => {
   const [data, setData] = React.useState<unknown>([])
@@ -18,8 +18,8 @@ const ChartContainer: React.FC = () => {
 
 
   React.useEffect(() => {
-    let url = 'https://binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d'
-    let proxyUrl = "https://cors-anywhere.herokuapp.com/"
+    let url = binanceApi
+    let proxyUrl = corsProxy
     axios({
       method: 'get',
       url: proxyUrl+url
