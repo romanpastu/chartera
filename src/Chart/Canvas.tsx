@@ -92,6 +92,8 @@ const Canvas: React.FC<IProps> = (props) => {
         accumulatedWith += candleWidth;
       }
       if (candleWidth) {
+        let bodyHeight : number = Math.abs((i.open - i.close) * heightCubicles)
+        let tailHeight : number = (i.high - i.low) * heightCubicles
         /*To draw the body of the candle*/
         drawCandle(
           context,
@@ -104,13 +106,14 @@ const Canvas: React.FC<IProps> = (props) => {
             maxHigh
           ),
           candleWidth,
-          Math.abs((i.open - i.close) * heightCubicles),
+          bodyHeight,
           getColor(i.open, i.close)
         );
 
         /*To draw the tail of the candle*/
-
-        drawLine(context, accumulatedWith + (candleWidth / 2), (maxHigh - i.high) * heightCubicles, 1, (i.high - i.low) * heightCubicles, getColor(i.open, i.close));
+        let tailMarginLeft : number = accumulatedWith + (candleWidth / 2)
+        let tailMarginTop : number = (maxHigh - i.high) * heightCubicles
+        drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
       }
 
     })

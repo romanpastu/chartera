@@ -54,7 +54,7 @@ export const drawLine = (
 ) => {
     ctx.fillStyle = color;
     ctx.beginPath();
-    ctx.rect(mL, mT, 1, height);
+    ctx.rect(mL, mT, width, height);
     ctx.fill();
 };
 
@@ -124,11 +124,11 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
         ctx.stroke();
     }
 
-    //current price
+    //current time
     ctx.beginPath();
     ctx.setLineDash([5]);
-    ctx.moveTo(ctx.canvas.width - (ChartRightMargin+2), 0)
-    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+2), ctx.canvas.width)
+    ctx.moveTo(ctx.canvas.width - (ChartRightMargin+4), 0)
+    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+4), ctx.canvas.width)
     ctx.strokeStyle = "white"
     ctx.stroke();
 
