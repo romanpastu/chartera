@@ -3,18 +3,16 @@ import axios from 'axios';
 import React from 'react';
 import Canvas from "./Canvas"
 import { convertData } from "./Helpers"
-import {binanceApi, corsProxy} from "../constants"
+import { binanceApi, corsProxy } from "../constants"
 import Spinner from "../Spinner/Spinner"
 const ChartContainer: React.FC = () => {
   const [data, setData] = React.useState<unknown>([])
-  const [prevMonthStamp, setPrevMonthStamp] = React.useState<number>()
-
-  React.useEffect(() => {
-    var d: any = new Date();
-    d.setMonth(d.getMonth() - 30);//timestamp of x months ago
+  const [prevMonthStamp] = React.useState<number>(() => {
+    const d: Date = new Date();
+    d.setMonth(d.getMonth() - 20);//timestamp of x months ago
     d.setHours(0, 0, 0, 0);
-    setPrevMonthStamp((d / 1000 | 0) * 1000); 
-  }, [])
+    return (Number(d) / 1000 | 0) * 1000
+  })
 
 
   React.useEffect(() => {
@@ -22,7 +20,7 @@ const ChartContainer: React.FC = () => {
     let proxyUrl = corsProxy
     axios({
       method: 'get',
-      url: proxyUrl+url
+      url: proxyUrl + url
     }).then(res => {
       if (prevMonthStamp) {
         setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp))

@@ -33,17 +33,17 @@ const Canvas: React.FC<IProps> = (props) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    const canvas: any = canvasRef.current;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     if (data && data.length !== 0) {
       setCandleWidth(canvas.width / data.length)
     }
-  }, [data])
+  }, [data, canvasRef])
 
   useEffect(() => {
-    const canvas: any = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const canvas: HTMLCanvasElement  = canvasRef.current!;
+    const context : CanvasRenderingContext2D = canvas.getContext("2d")!;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
