@@ -21,7 +21,7 @@ interface IProps {
 }
 
 const Canvas: React.FC<IProps> = (props) => {
-  const [data, setData] = useState<Array<{
+  const [data] = useState<Array<{
     low: number,
     high: number,
     open: number,

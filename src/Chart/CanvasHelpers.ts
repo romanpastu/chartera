@@ -1,5 +1,5 @@
 import { getDate } from "./Helpers"
-import {ChartRightMargin} from "./constants";
+import { ChartRightMargin } from "./constants";
 /*
   To get the height necessary to push down the candle body
   */
@@ -9,7 +9,7 @@ export const calcTopBody = (
     close: number,
     heightCubicles: number,
     high: number
-) => {
+): number => {
     //case : first candle
     if (prevClose === undefined) {
         if (open - close > 0) {
@@ -35,7 +35,7 @@ export const drawCandle = (
     width: number,
     height: number,
     color: string
-) => {
+): void => {
     ctx.fillStyle = color;
     ctx.beginPath();
     //margin left, margin top, width, height
@@ -51,7 +51,7 @@ export const drawLine = (
     width: number,
     height: number,
     color: string
-) => {
+): void => {
     ctx.fillStyle = color;
     ctx.beginPath();
     ctx.rect(mL, mT, width, height);
@@ -60,11 +60,11 @@ export const drawLine = (
 
 /*Draws the horizontal price lines*/
 
-export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberOfLines: number) => {
+export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberOfLines: number): void => {
     let heightPoints: number = ctx.canvas.height / (numberOfLines + 1);
     let priceList: Array<number> = []
     //Draws the lines
-    for (let i = 0; i <= numberOfLines + 1; i++) {
+    for (let i : number = 0; i <= numberOfLines + 1; i++) {
         let price: number = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
         priceList.push(price)
         // console.log("price[" + i + "] " + (minLow + (prices * i)))
@@ -76,8 +76,13 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberO
     }
 
     priceList.reverse()
+    drawPriceFonts(priceList, ctx, heightPoints)
 
-    //Draws the prices fonts
+}
+
+/*Draws the prices fonts*/
+
+const drawPriceFonts = (priceList: Array<number>, ctx: any, heightPoints: number): void => {
     priceList.forEach((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
@@ -103,13 +108,12 @@ export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberO
         } else {
             ctx.fillText(price, rightMargin, (heightPoints * index) - 5);
         }
-
     })
 }
 
 
 /*Draws the vertical time lines*/
-export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberOfLines: number, skippedDays: number) => {
+export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberOfLines: number, skippedDays: number): void => {
     let widthPoints: number = ctx.canvas.width / (numberOfLines + 1);
     let timeList: Array<number> = []
 
@@ -124,15 +128,20 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
         ctx.stroke();
     }
 
-    //current time
+    //Exceptional case - draws the current time line
     ctx.beginPath();
     ctx.setLineDash([5]);
-    ctx.moveTo(ctx.canvas.width - (ChartRightMargin+4), 0)
-    ctx.lineTo(ctx.canvas.width - (ChartRightMargin+4), ctx.canvas.height)
+    ctx.moveTo(ctx.canvas.width - (ChartRightMargin + 4), 0)
+    ctx.lineTo(ctx.canvas.width - (ChartRightMargin + 4), ctx.canvas.height)
     ctx.strokeStyle = "white"
     ctx.stroke();
 
     //Draws the time fonts
+    drawTimeFonts(timeList, ctx, widthPoints, skippedDays)
+}
+
+/* Draws the time fonts */
+export const drawTimeFonts = (timeList: Array<number>, ctx: any, widthPoints: number, skippedDays: number): void => {
     timeList.forEach((i: number, index: number) => {
         ctx.font = "11px Arial"
         ctx.fillStyle = "orange";
@@ -140,19 +149,18 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
 
         if (index !== timeList.length - 1) {
             //time + delay of X days based on the right margin
-            ctx.fillText(getDate(time + (skippedDays* 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
+            ctx.fillText(getDate(time + (skippedDays * 86400 * 1000)), (widthPoints * index) + 5, ctx.canvas.height - 4)
         } else if (index === timeList.length - 1) {
             ctx.fillText(getDate(time), ((widthPoints * index) - ChartRightMargin), ctx.canvas.height - 20)
         }
     })
-
-
 }
+
 
 /*
 Gets the candle color
 */
-export const getColor = (open: number, close: number) => {
+export const getColor = (open: number, close: number) : string => {
     if (open - close > 0) {
         return "red";
     } else {

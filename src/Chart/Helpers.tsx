@@ -1,5 +1,13 @@
-export const convertData = (data: (string | number)[][]) => {
-  return data.map((x: (string | number)[], index: number) => {
+type DataConverted = {
+  low: number,
+  high: number,
+  open: number,
+  close: number,
+  openTime: number
+}
+
+export const convertData = (data: (string | number)[][]) : Array<DataConverted> => {
+  return data.map((x: (string | number)[]) => {
     return {
       low: Number(x[3]),
       high: Number(x[2]),
@@ -10,9 +18,9 @@ export const convertData = (data: (string | number)[][]) => {
   })
 }
 
-export const getDate = (stamp: number) => {
-  let date: any = new Date(stamp )
-  let month = date.getMonth()+1;
+export const getDate = (stamp: number) : string => {
+  let date: any = new Date(stamp)
+  let month = date.getMonth() + 1;
   let day = date.getDate();
   let year = date.getFullYear();
   let formattedTime = day + '/' + month + '/' + year;
