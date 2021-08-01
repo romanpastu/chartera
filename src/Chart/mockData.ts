@@ -5,7 +5,7 @@ export let priceArray : any = [
         "8691.81000000", //high [2]
         "8306.39000000", //low [3]
         "8404.52000000", //close [4]
-        "48165.94459700", //volume
+        "48165.94459700", //volume [5]
         1579823999999, //close time [6]
         "407428808.67533703", //quote asset volume
         464805, //number of trades

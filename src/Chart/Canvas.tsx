@@ -1,13 +1,14 @@
 // @ts-ignore
 import { useRef, useEffect, useState } from "react";
-import { calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine } from "./CanvasHelpers"
+import { calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle } from "./CanvasHelpers"
 import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from "./constants"
 type dataObj = {
   low: number,
   high: number,
   open: number,
   close: number,
-  openTime: number
+  openTime: number,
+  volume: number
 }
 
 interface IProps {
@@ -16,18 +17,13 @@ interface IProps {
     high: number,
     open: number,
     close: number,
-    openTime: number
+    openTime: number,
+    volume: number
   }>
 }
 
 const Canvas: React.FC<IProps> = (props) => {
-  const [data] = useState<Array<{
-    low: number,
-    high: number,
-    open: number,
-    close: number,
-    openTime: number
-  }>>(props.data);
+  const [data] = useState<Array<dataObj>>(props.data);
   const [candleWidth, setCandleWidth] = useState<number>();
 
   const canvasRef = useRef(null);
@@ -42,24 +38,23 @@ const Canvas: React.FC<IProps> = (props) => {
   }, [data, canvasRef])
 
   useEffect(() => {
-    const canvas: HTMLCanvasElement  = canvasRef.current!;
-    const context : CanvasRenderingContext2D = canvas.getContext("2d")!;
+    const canvas: HTMLCanvasElement = canvasRef.current!;
+    const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    //Gets the highest hit value
-    let maxHigh: number = Math.max(...data.map((o: dataObj) => { return o.high; }));
-    //Gets the lowest hit value
-    let minLow: number = Math.min(...data.map((o: dataObj) => { return o.low; }));
-    //Gets the last time
+
+    let highestVal: number = Math.max(...data.map((o: dataObj) => { return o.high; }));
+    let lowestVal: number = Math.min(...data.map((o: dataObj) => { return o.low; }));
     let maxTime: number = Math.max(...data.map((o: dataObj) => { return o.openTime }))
-    //Gets the lowest time
     let minTime: number = Math.min(...data.map((o: dataObj) => { return o.openTime; }));
+    let maxVolume: number = Math.max(...data.map((o: dataObj) => { return o.volume; }));
+    let minVolume: number = Math.min(...data.map((o: dataObj) => { return o.volume; }));
     /*
     The size of each unit of height 
     To get sized based on   (price1-price2)*heightCubicles
     */
-    let heightCubicles: number = context.canvas.height / (maxHigh - minLow); //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
+    let heightCubicles: number = context.canvas.height / (highestVal - lowestVal); //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
     let widthCubciles: number = context.canvas.width / (maxTime - minTime);
     //Fills the whole screen with black
     context.fillStyle = "black";
@@ -69,10 +64,10 @@ const Canvas: React.FC<IProps> = (props) => {
     let accumulatedWith: number = 0;
 
     /*Draw horizontal lines*/
-    if (data) drawPriceLine(context, maxHigh, minLow, horizontalPriceLines)
+    if (data) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLines)
 
 
-    let candlesToIgnore = 0;
+    let candlesToIgnore: number = 0;
     if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth
 
     /*Draw timestamp lines*/
@@ -97,7 +92,7 @@ const Canvas: React.FC<IProps> = (props) => {
             i.open,
             i.close,
             heightCubicles,
-            maxHigh
+            highestVal
           ),
           candleWidth,
           bodyHeight,
@@ -106,8 +101,11 @@ const Canvas: React.FC<IProps> = (props) => {
 
         /*To draw the tail of the candle*/
         let tailMarginLeft: number = accumulatedWith + (candleWidth / 2)
-        let tailMarginTop: number = (maxHigh - i.high) * heightCubicles
+        let tailMarginTop: number = (highestVal - i.high) * heightCubicles
         drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
+
+        /*Draw volume candles*/
+        drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height)
       }
 
     })

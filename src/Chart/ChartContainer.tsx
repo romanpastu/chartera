@@ -16,8 +16,8 @@ const ChartContainer: React.FC = () => {
 
 
   React.useEffect(() => {
-    let url = binanceApi
-    let proxyUrl = corsProxy
+    let url : string = binanceApi
+    let proxyUrl : string = corsProxy
     axios({
       method: 'get',
       url: proxyUrl + url

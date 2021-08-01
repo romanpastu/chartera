@@ -60,12 +60,12 @@ export const drawLine = (
 
 /*Draws the horizontal price lines*/
 
-export const drawPriceLine = (ctx: any, maxHigh: number, minLow: number, numberOfLines: number): void => {
+export const drawPriceLine = (ctx: any, highestVal: number, lowestVal: number, numberOfLines: number): void => {
     let heightPoints: number = ctx.canvas.height / (numberOfLines + 1);
     let priceList: Array<number> = []
     //Draws the lines
     for (let i : number = 0; i <= numberOfLines + 1; i++) {
-        let price: number = (minLow) + ((heightPoints * i) * ((maxHigh - minLow) / ctx.canvas.height))
+        let price: number = (lowestVal) + ((heightPoints * i) * ((highestVal - lowestVal) / ctx.canvas.height))
         priceList.push(price)
         // console.log("price[" + i + "] " + (minLow + (prices * i)))
         ctx.beginPath();
@@ -156,14 +156,22 @@ export const drawTimeFonts = (timeList: Array<number>, ctx: any, widthPoints: nu
     })
 }
 
+/* Draw volume candle */
+export const drawVolumeCandle = (ctx: any , accumulatedWith: number, open: number, close: number, volume: number, maxVolume: number, candleWidth: number, height?: number): void => {
+    ctx.fillStyle = getColor(open, close, 0.15);
+    ctx.beginPath();
+    ctx.rect(accumulatedWith, height && height*(0.9-((volume*0.1)/maxVolume)), candleWidth, height && height*(0.1+((volume*0.1)/maxVolume)));
+    ctx.fill();
+}
+
 
 /*
 Gets the candle color
 */
-export const getColor = (open: number, close: number) : string => {
+export const getColor = (open: number, close: number, opacity? :number) : string => {
     if (open - close > 0) {
-        return "red";
+        return opacity ?`rgb(255,0,0,${opacity.toString()})`: "rgb(255,0,0)";
     } else {
-        return "green";
+        return opacity ?`rgb(0,255,0,${opacity.toString()})`: "rgb(0,255,0)";
     }
 };

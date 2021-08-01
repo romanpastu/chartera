@@ -3,7 +3,8 @@ type DataConverted = {
   high: number,
   open: number,
   close: number,
-  openTime: number
+  openTime: number,
+  volume: number
 }
 
 export const convertData = (data: (string | number)[][]) : Array<DataConverted> => {
@@ -13,7 +14,8 @@ export const convertData = (data: (string | number)[][]) : Array<DataConverted> 
       high: Number(x[2]),
       open: Number(x[1]),
       close: Number(x[4]),
-      openTime: Number(x[0])
+      openTime: Number(x[0]),
+      volume: Number(x[5])
     }
   })
 }
