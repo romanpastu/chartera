@@ -160,7 +160,7 @@ export const drawTimeFonts = (timeList: Array<number>, ctx: any, widthPoints: nu
 export const drawVolumeCandle = (ctx: any , accumulatedWith: number, open: number, close: number, volume: number, maxVolume: number, candleWidth: number, height?: number): void => {
     ctx.fillStyle = getColor(open, close, 0.15);
     ctx.beginPath();
-    ctx.rect(accumulatedWith, height && height*(0.9-((volume*0.1)/maxVolume)), candleWidth, height && height*(0.1+((volume*0.1)/maxVolume)));
+    ctx.rect(accumulatedWith, height ? height*(0.9-((volume*0.1)/maxVolume)) : 0, candleWidth, height ? height*(0.1+((volume*0.1)/maxVolume)) : 0);
     ctx.fill();
 }
 
