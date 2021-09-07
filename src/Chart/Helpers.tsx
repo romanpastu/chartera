@@ -1,4 +1,4 @@
-type DataConverted = {
+type DataObj = {
   low: number,
   high: number,
   open: number,
@@ -7,7 +7,16 @@ type DataConverted = {
   volume: number
 }
 
-export const convertData = (data: (string | number)[][]) : Array<DataConverted> => {
+type ChartRefPoints = {
+ highestVal? : number,
+ lowestVal?: number,
+ maxTime? : number,
+ minTime? : number,
+ maxVolume? : number,
+ minVolume? : number
+}
+
+export const convertData = (data: (string | number)[][]) : Array<DataObj> => {
   return data.map((x: (string | number)[]) => {
     return {
       low: Number(x[3]),
@@ -21,10 +30,21 @@ export const convertData = (data: (string | number)[][]) : Array<DataConverted> 
 }
 
 export const getDate = (stamp: number) : string => {
-  let date: any = new Date(stamp)
+  let date: Date = new Date(stamp)
   let month = date.getMonth() + 1;
   let day = date.getDate();
   let year = date.getFullYear();
   let formattedTime = day + '/' + month + '/' + year;
   return formattedTime
+}
+
+export const getChartRefPoints = (data : DataObj[]) => {
+  let obj : ChartRefPoints = {}
+  obj["highestVal"]  = Math.max(...data.map((o: DataObj) => { return o.high; }));
+  obj["lowestVal"] = Math.min(...data.map((o: DataObj) => { return o.low; }));
+  obj["maxTime"] =  Math.max(...data.map((o: DataObj) => { return o.openTime }))
+  obj["minTime"] = Math.min(...data.map((o: DataObj) => { return o.openTime; }));
+  obj["maxVolume"] = Math.max(...data.map((o: DataObj) => { return o.volume; }));
+  obj["minVolume"] = Math.min(...data.map((o: DataObj) => { return o.volume; }));
+  return obj;
 }

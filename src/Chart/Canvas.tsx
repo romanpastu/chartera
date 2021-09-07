@@ -2,6 +2,7 @@
 import { useRef, useEffect, useState } from "react";
 import { calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle } from "./CanvasHelpers"
 import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from "./constants"
+import { getChartRefPoints } from "./Helpers"
 type dataObj = {
   low: number,
   high: number,
@@ -43,20 +44,14 @@ const Canvas: React.FC<IProps> = (props) => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
+    const { highestVal, lowestVal, maxTime, minTime, maxVolume, minVolume } = getChartRefPoints(data)
 
-    let highestVal: number = Math.max(...data.map((o: dataObj) => { return o.high; }));
-    let lowestVal: number = Math.min(...data.map((o: dataObj) => { return o.low; }));
-    let maxTime: number = Math.max(...data.map((o: dataObj) => { return o.openTime }))
-    let minTime: number = Math.min(...data.map((o: dataObj) => { return o.openTime; }));
-    let maxVolume: number = Math.max(...data.map((o: dataObj) => { return o.volume; }));
-    let minVolume: number = Math.min(...data.map((o: dataObj) => { return o.volume; }));
     /*
     The size of each unit of height 
     To get sized based on   (price1-price2)*heightCubicles
     */
-    let heightCubicles: number = context.canvas.height / (highestVal - lowestVal); //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
-    let widthCubciles: number = context.canvas.width / (maxTime - minTime);
-    //Fills the whole screen with black
+    let heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
+    let widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
     context.fillStyle = "black";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
@@ -64,14 +59,14 @@ const Canvas: React.FC<IProps> = (props) => {
     let accumulatedWith: number = 0;
 
     /*Draw horizontal lines*/
-    if (data) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLines)
+    if (data && highestVal && lowestVal) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLines)
 
 
     let candlesToIgnore: number = 0;
     if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth
 
     /*Draw timestamp lines*/
-    drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore)
+    if (maxTime && minTime) drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore)
 
     //Draw the candles
     data && data.length > 0 && data.filter((i, index) => index >= candlesToIgnore).forEach((i: dataObj, index: number) => {
@@ -80,7 +75,7 @@ const Canvas: React.FC<IProps> = (props) => {
       if (index > 0 && candleWidth) {
         accumulatedWith += candleWidth;
       }
-      if (candleWidth) {
+      if (candleWidth && highestVal) {
         let bodyHeight: number = Math.abs((i.open - i.close) * heightCubicles)
         let tailHeight: number = (i.high - i.low) * heightCubicles
         /*To draw the body of the candle*/
@@ -105,7 +100,7 @@ const Canvas: React.FC<IProps> = (props) => {
         drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
 
         /*Draw volume candles*/
-        drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height)
+        if(maxVolume) drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height)
       }
 
     })
