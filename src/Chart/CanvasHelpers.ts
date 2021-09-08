@@ -131,8 +131,8 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
     //Exceptional case - draws the current time line
     ctx.beginPath();
     ctx.setLineDash([5]);
-    ctx.moveTo(ctx.canvas.width - (ChartRightMargin + 4), 0)
-    ctx.lineTo(ctx.canvas.width - (ChartRightMargin + 4), ctx.canvas.height)
+    ctx.moveTo(ctx.canvas.width - (ChartRightMargin +2.5), 0)
+    ctx.lineTo(ctx.canvas.width - (ChartRightMargin +2.5), ctx.canvas.height)
     ctx.strokeStyle = "white"
     ctx.stroke();
 
