@@ -98,7 +98,8 @@ const Canvas: React.FC<IProps> = (props) => {
         let tailMarginLeft: number = accumulatedWith + (candleWidth / 2)
         let tailMarginTop: number = (highestVal - i.high) * heightCubicles
         drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
-
+        /*draw the current price line*/
+        if(index === data.filter((i, index) => index >= candlesToIgnore).length-1) drawLine(context, tailMarginLeft, 0,0,0,"", true);
         /*Draw volume candles*/
         if(maxVolume) drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height)
       }
