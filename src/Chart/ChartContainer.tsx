@@ -36,7 +36,7 @@ const ChartContainer: React.FC<RouteComponentProps> = ({history}) => {
 
   if (Array.isArray(data) && data?.length > 0) {
     return (
-      <Canvas data={convertData(data)} />
+      <Canvas dataProp={convertData(data)} />
     );
   } else {
     return <Spinner />

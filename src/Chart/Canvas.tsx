@@ -13,18 +13,19 @@ type dataObj = {
 }
 
 interface IProps {
-  data: Array<{
+  dataProp: Array<{
     low: number,
     high: number,
     open: number,
     close: number,
     openTime: number,
     volume: number
-  }>
+  }>,
+  bgColor?: string 
 }
 
-const Canvas: React.FC<IProps> = (props) => {
-  const [data] = useState<Array<dataObj>>(props.data);
+const Canvas: React.FC<IProps> = ({dataProp, bgColor="black"}: IProps) => {
+  const [data] = useState<Array<dataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
 
   const canvasRef = useRef(null);
@@ -52,7 +53,7 @@ const Canvas: React.FC<IProps> = (props) => {
     */
     let heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
     let widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
-    context.fillStyle = "black";
+    context.fillStyle = bgColor;
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
     //Width is accumulated to distribute the candles horizontally
@@ -107,6 +108,6 @@ const Canvas: React.FC<IProps> = (props) => {
     })
   }, [candleWidth, data])
 
-  return <canvas ref={canvasRef} {...props} />;
+  return <canvas ref={canvasRef} />;
 }
 export default Canvas;
