@@ -5,7 +5,10 @@ import Canvas from "./Canvas"
 import { convertData } from "./Helpers"
 import { binanceApi, corsProxy } from "../constants"
 import Spinner from "../Spinner/Spinner"
-const ChartContainer: React.FC = () => {
+import {RouteComponentProps} from 'react-router-dom'
+
+
+const ChartContainer: React.FC<RouteComponentProps> = ({history}) => {
   const [data, setData] = React.useState<unknown>([])
   const [prevMonthStamp] = React.useState<number>(() => {
     const d: Date = new Date();
@@ -26,9 +29,9 @@ const ChartContainer: React.FC = () => {
         setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp))
       }
     }).catch(err => {
-      console.log(err)
+      history.push("/error")
     })
-  }, [prevMonthStamp])
+  }, [prevMonthStamp, history])
 
 
   if (Array.isArray(data) && data?.length > 0) {
