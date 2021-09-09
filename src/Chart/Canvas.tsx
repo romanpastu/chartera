@@ -51,7 +51,7 @@ const Canvas: React.FC<IProps> = ({dataProp, bgColor="black"}: IProps) => {
     The size of each unit of height 
     To get sized based on   (price1-price2)*heightCubicles
     */
-    let heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; //cada unidad de precio equivale a unidad * heightcubicles en escala de canvas
+    let heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; //each price unit equals to unit * heightcubicles in canvas scale
     let widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
     context.fillStyle = bgColor;
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
@@ -106,7 +106,7 @@ const Canvas: React.FC<IProps> = ({dataProp, bgColor="black"}: IProps) => {
       }
 
     })
-  }, [candleWidth, data])
+  }, [candleWidth, data, bgColor])
 
   return <canvas ref={canvasRef} />;
 }
