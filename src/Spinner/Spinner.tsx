@@ -1,19 +1,21 @@
 import React from 'react';
-import "./Spinner.css"
+import './Spinner.css';
 
-const Spinner: React.FC = () => {
-    return <div className="center">
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
-        <div className="wave"></div>
+const Spinner: React.FC = function () {
+  return (
+    <div className="center">
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
+      <div className="wave" />
     </div>
-}
+  );
+};
 
-export default Spinner
+export default Spinner;
