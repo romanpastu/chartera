@@ -1,4 +1,4 @@
-type DataObj = {
+export type DataObj = {
   low: number,
   high: number,
   open: number,
@@ -43,4 +43,11 @@ export const getChartRefPoints = (data : DataObj[]) => {
   obj.maxVolume = Math.max(...data.map((o: DataObj) => o.volume));
   obj.minVolume = Math.min(...data.map((o: DataObj) => o.volume));
   return obj;
+};
+
+export const calcPrevMonthsTS = (months: number) => {
+  const d: Date = new Date();
+  d.setMonth(d.getMonth() - months);// timestamp of x months ago
+  d.setHours(0, 0, 0, 0);
+  return (Number(d) / 1000 | 0) * 1000;
 };

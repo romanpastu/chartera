@@ -1,5 +1,5 @@
 import { getDate } from './Helpers';
-import { ChartRightMargin } from './constants';
+import { ChartRightMargin } from '../../Constants/constants';
 /*
   To get the height necessary to push down the candle body
   */

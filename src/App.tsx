@@ -1,6 +1,6 @@
 import React from 'react';
-import ChartContainer from './Chart/ChartContainer';
-import Error from './Error/Error';
+import ChartContainer from './Components/Chart/ChartContainer';
+import Error from './Components/Error/Error';
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router';
 

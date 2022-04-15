@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-const Error: React.FC<RouteComponentProps> = function ({ history }) {
+const Error: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <>
       <p>Error loading the site</p>

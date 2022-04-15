@@ -2,27 +2,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import {
   calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle
 } from './CanvasHelpers';
-import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from './constants';
-import { getChartRefPoints } from './Helpers';
-
-type DataObj = {
-  low: number,
-  high: number,
-  open: number,
-  close: number,
-  openTime: number,
-  volume: number
-};
+import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from '../../Constants/constants';
+import { getChartRefPoints, DataObj } from './Helpers';
 
 interface IProps {
-  dataProp: Array<{
-    low: number,
-    high: number,
-    open: number,
-    close: number,
-    openTime: number,
-    volume: number
-  }>,
+  dataProp: Array<DataObj>,
   bgColor?: string
 }
 
