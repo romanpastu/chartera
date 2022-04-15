@@ -12,10 +12,11 @@ export const useFetchChart = () => {
     const url: string = binanceApi;
     const proxyUrl: string = corsProxy;
     const prevMonthStamp: number = calcPrevMonthsTS(20);
+
     setIsLoading(true);
     axios({
       method: 'get',
-      url: proxyUrl + url
+      url: proxyUrl + url,
     }).then((res) => {
       setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp));
       setIsLoading(false);
@@ -24,7 +25,8 @@ export const useFetchChart = () => {
       console.log(err);
       setIsLoading(false);
     });
-  }, [history]);
+  }, []);
+
 
   return { isLoading, data, serverError };
 };
