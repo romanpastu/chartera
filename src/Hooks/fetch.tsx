@@ -16,7 +16,7 @@ export const useFetchChart = () => {
     setIsLoading(true);
     axios({
       method: 'get',
-      url: proxyUrl + url,
+      url: proxyUrl + url
     }).then((res) => {
       setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp));
       setIsLoading(false);
@@ -26,7 +26,6 @@ export const useFetchChart = () => {
       setIsLoading(false);
     });
   }, []);
-
 
   return { isLoading, data, serverError };
 };
