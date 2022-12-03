@@ -1,4 +1,4 @@
 Tool for financial products data visualization
 
-![image](![image](https://user-images.githubusercontent.com/43568511/205450481-8ae9bf13-fe8e-4ebf-a7cd-984fe76e6595.png))
+![image](https://user-images.githubusercontent.com/43568511/205450505-fd77472d-3055-4daf-a01a-40eb9c1617a9.png)
 Preview: https://react-chartera.azurewebsites.net/
