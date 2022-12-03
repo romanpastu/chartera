@@ -32,7 +32,7 @@ export const useFetchChart = () => {
       console.log(err);
       setIsLoading(false);
     });
-  }, []);
+  }, [search]);
 
   return { isLoading, data, serverError };
 };

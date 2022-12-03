@@ -5,17 +5,22 @@ import Chart from '../Chart/Chart';
 import { convertData } from './Helpers';
 import Spinner from '../Spinner/Spinner';
 import { useFetchChart } from '../../Hooks/fetch';
+import { IntervalSelector } from './IntervalSelector';
 
 const ChartContainer: React.FC<RouteComponentProps> = ({ history }) => {
-  const { data, serverError } = useFetchChart();
+  const { data, serverError, isLoading } = useFetchChart();
+  const isData = Array.isArray(data) && data?.length > 0;
 
   if (serverError) {
     history.push('/error');
   }
 
-  if (Array.isArray(data) && data?.length > 0) {
+  if (isData && !isLoading) {
     return (
-      <Chart dataProp={convertData(data)} />
+      <>
+        <IntervalSelector />
+        <Chart dataProp={convertData(data)} />
+      </>
     );
   }
   return <Spinner />;
