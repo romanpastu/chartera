@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { binanceApi, corsProxy } from '../Constants/constants';
-import { calcPrevMonthsTS } from '../Components/Chart/Helpers';
+import { binanceApi } from '../Constants/constants';
+import { calcPrevMonthsTS } from '../Components/ChartContainer/Helpers';
 import { useLocation } from 'react-router-dom';
 
 export const useFetchChart = () => {
@@ -17,13 +17,13 @@ export const useFetchChart = () => {
     const newParams = new URLSearchParams();
     newParams.append('symbol', symbol);
     newParams.append('interval', interval);
-    const proxyUrl: string = corsProxy;
+    // const proxyUrl: string = corsProxy;
     const prevMonthStamp: number = calcPrevMonthsTS(20);
 
     setIsLoading(true);
     axios({
       method: 'get',
-      url: proxyUrl + url + `?${newParams}`
+      url: url + `?${newParams}`
     }).then((res) => {
       setData(res.data.filter((i: number[]) => i[0] >= prevMonthStamp));
       setIsLoading(false);

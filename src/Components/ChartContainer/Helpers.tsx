@@ -7,15 +7,6 @@ export type DataObj = {
   volume: number
 };
 
-type ChartRefPoints = {
-  highestVal? : number,
-  lowestVal?: number,
-  maxTime? : number,
-  minTime? : number,
-  maxVolume? : number,
-  minVolume? : number
-};
-
 export const convertData = (data: (string | number)[][]) : Array<DataObj> => data.map((x: (string | number)[]) => ({
   low: Number(x[3]),
   high: Number(x[2]),
@@ -32,17 +23,6 @@ export const getDate = (stamp: number) : string => {
   const year = date.getFullYear();
   const formattedTime = `${day}/${month}/${year}`;
   return formattedTime;
-};
-
-export const getChartRefPoints = (data : DataObj[]) => {
-  const obj : ChartRefPoints = {};
-  obj.highestVal = Math.max(...data.map((o: DataObj) => o.high));
-  obj.lowestVal = Math.min(...data.map((o: DataObj) => o.low));
-  obj.maxTime = Math.max(...data.map((o: DataObj) => o.openTime));
-  obj.minTime = Math.min(...data.map((o: DataObj) => o.openTime));
-  obj.maxVolume = Math.max(...data.map((o: DataObj) => o.volume));
-  obj.minVolume = Math.min(...data.map((o: DataObj) => o.volume));
-  return obj;
 };
 
 export const calcPrevMonthsTS = (months: number) => {

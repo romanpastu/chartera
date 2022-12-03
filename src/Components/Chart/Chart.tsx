@@ -1,16 +1,21 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
-  calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle
-} from './CanvasHelpers';
-import { ChartRightMargin, horizontalPriceLines, verticalPriceLines } from '../../Constants/constants';
-import { getChartRefPoints, DataObj } from './Helpers';
+  calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle, getChartRefPoints
+} from './ChartHelpers';
+import { BgColor, ChartRightMargin, FontColor, horizontalPriceLines, PriceLinesColor, verticalPriceLines } from './constants/constants';
+import { DataObj } from '../ChartContainer/Helpers';
 
 interface IProps {
   dataProp: Array<DataObj>,
-  bgColor?: string
+  bgColor?: string,
+  rightMarginProp?: number,
+  horizontalPriceLinesProp?: number,
+  verticalPriceLinesProp?: number,
+  PriceLineColorProp?: string,
+  fontColor?: string
 }
 
-const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = 'black' }: IProps) {
+const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BgColor, rightMarginProp = ChartRightMargin, horizontalPriceLinesProp = horizontalPriceLines, verticalPriceLinesProp = verticalPriceLines, PriceLineColorProp = PriceLinesColor, fontColor = FontColor }: IProps) {
   const [data] = useState<Array<DataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
 
@@ -50,13 +55,13 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = 'black' }: IPro
     let accumulatedWith: number = 0;
 
     /* Draw horizontal lines */
-    if (data && highestVal && lowestVal) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLines);
+    if (data && highestVal && lowestVal) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLinesProp, PriceLineColorProp, fontColor);
 
     let candlesToIgnore: number = 0;
-    if (candleWidth) candlesToIgnore = ChartRightMargin / candleWidth;
+    if (candleWidth) candlesToIgnore = (rightMarginProp || ChartRightMargin) / candleWidth;
 
     /* Draw timestamp lines */
-    if (maxTime && minTime) drawTimeLine(context, maxTime, minTime, verticalPriceLines, candlesToIgnore);
+    if (maxTime && minTime) drawTimeLine(context, maxTime, minTime, verticalPriceLinesProp, candlesToIgnore, rightMarginProp, PriceLineColorProp, fontColor);
 
     // Draw the candles
     data && data.length > 0 && data.filter((i, index) => index >= candlesToIgnore).forEach((i: DataObj, index: number) => {
@@ -97,4 +102,4 @@ const Canvas: React.FC<IProps> = function ({ dataProp, bgColor = 'black' }: IPro
 
   return <canvas ref={canvasRef} />;
 };
-export default Canvas;
+export default Chart;
