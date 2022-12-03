@@ -38,7 +38,7 @@ const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BgColor, rightMa
 
     const {
       // eslint-disable-next-line no-unused-vars
-      highestVal, lowestVal, maxTime, minTime, maxVolume, minVolume
+      highestVal, lowestVal, maxTime, minTime, maxVolume // minVolume
     } = getChartRefPoints(data);
 
     /*
@@ -47,7 +47,7 @@ const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BgColor, rightMa
     */
     const heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; // each price unit equals to unit * heightcubicles in canvas scale
     // eslint-disable-next-line no-unused-vars
-    const widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
+    // const widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
     context.fillStyle = bgColor;
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
