@@ -29,7 +29,7 @@ export const PairSelector: React.FC<IPairSelector> = ({ pairs }) => {
     history.replace({
       search: searchParams.toString()
     });
-  }, [selectedValue]);
+  }, [history, selectedValue]);
   return (
     <>
       <select
@@ -42,7 +42,6 @@ export const PairSelector: React.FC<IPairSelector> = ({ pairs }) => {
           setSelectedValue(e.target.value);
         }}
       >
-        <input />
         {options?.length > 0 && options?.map((option: any) => (
           <option key={option} value={option}>
             {option}
