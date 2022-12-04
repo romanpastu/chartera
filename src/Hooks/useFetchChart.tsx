@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { binanceApi } from '../Constants/constants';
+import { BINANCE_API_KLINES, DEFAULT_INTERVAL, DEFAULT_SYMBOL } from '../Constants/constants';
 import { calcPrevMonthsTS } from '../Components/ChartContainer/Helpers';
 import { useLocation } from 'react-router-dom';
 
@@ -11,9 +11,9 @@ export const useFetchChart = () => {
   const { search } = useLocation();
   useEffect(() => {
     const params = new URLSearchParams(search);
-    const symbol: string = params.get('symbol') || 'BTCUSDT';
-    const interval: string = params.get('interval') || '1d';
-    const url: string = binanceApi;
+    const symbol: string = params.get('symbol') || DEFAULT_SYMBOL;
+    const interval: string = params.get('interval') || DEFAULT_INTERVAL;
+    const url: string = BINANCE_API_KLINES;
     const newParams = new URLSearchParams();
     newParams.append('symbol', symbol);
     newParams.append('interval', interval);

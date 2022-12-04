@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import {
   calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle, getChartRefPoints
 } from './ChartHelpers';
-import { BgColor, ChartRightMargin, FontColor, horizontalPriceLines, PriceLinesColor, verticalPriceLines } from './constants/constants';
+import { BG_COLOR, CHART_RIGHT_MARGIN, FONT_COLOR, HORIZONTAL_PRICE_LINES, PRICE_LINES_COLOR, VERTICAL_PRICE_LINES } from './constants/constants';
 import { DataObj } from '../ChartContainer/Helpers';
 
 interface IProps {
@@ -15,7 +15,7 @@ interface IProps {
   fontColor?: string
 }
 
-const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BgColor, rightMarginProp = ChartRightMargin, horizontalPriceLinesProp = horizontalPriceLines, verticalPriceLinesProp = verticalPriceLines, PriceLineColorProp = PriceLinesColor, fontColor = FontColor }: IProps) {
+const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BG_COLOR, rightMarginProp = CHART_RIGHT_MARGIN, horizontalPriceLinesProp = HORIZONTAL_PRICE_LINES, verticalPriceLinesProp = VERTICAL_PRICE_LINES, PriceLineColorProp = PRICE_LINES_COLOR, fontColor = FONT_COLOR }: IProps) {
   const [data] = useState<Array<DataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
 
@@ -58,7 +58,7 @@ const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BgColor, rightMa
     if (data && highestVal && lowestVal) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLinesProp, PriceLineColorProp, fontColor);
 
     let candlesToIgnore: number = 0;
-    if (candleWidth) candlesToIgnore = (rightMarginProp || ChartRightMargin) / candleWidth;
+    if (candleWidth) candlesToIgnore = rightMarginProp / candleWidth;
 
     /* Draw timestamp lines */
     if (maxTime && minTime) drawTimeLine(context, maxTime, minTime, verticalPriceLinesProp, candlesToIgnore, rightMarginProp, PriceLineColorProp, fontColor);

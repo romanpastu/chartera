@@ -1,9 +1,9 @@
 // Chart Constants
-export const ChartRightMargin: number = 53;
-export const horizontalPriceLines: number = 13;
-export const verticalPriceLines: number = 3;
+export const CHART_RIGHT_MARGIN: number = 53;
+export const HORIZONTAL_PRICE_LINES: number = 13;
+export const VERTICAL_PRICE_LINES: number = 3;
 
 // Colors
-export const PriceLinesColor: string = 'rgb(30,35,38)';
-export const BgColor: string = 'black';
-export const FontColor: string = 'orange';
+export const PRICE_LINES_COLOR: string = 'rgb(30,35,38)';
+export const BG_COLOR: string = 'black';
+export const FONT_COLOR: string = 'orange';

@@ -1,5 +1,4 @@
 import { DataObj, getDate } from '../ChartContainer/Helpers';
-import { PriceLinesColor } from './constants/constants';
 /*
   To get the height necessary to push down the candle body
   */
@@ -150,7 +149,7 @@ export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberO
     ctx.beginPath();
     ctx.moveTo((widthPoints * i), 0);
     ctx.lineTo((widthPoints * i), ctx.canvas.height);
-    ctx.strokeStyle = color || PriceLinesColor;
+    ctx.strokeStyle = color;
     ctx.stroke();
   }
 

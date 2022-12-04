@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { DEFAULT_INTERVAL } from '../../Constants/constants';
+import { DEFAULT_SYMBOL } from '../../Constants/constants';
 
-export const IntervalSelector = () => {
+interface IPairSelector {
+  pairs: string[];
+}
+
+export const PairSelector: React.FC<IPairSelector> = ({ pairs }) => {
   const [selectedValue, setSelectedValue] = useState<string>('');
-  const options = [
-    '1m',
-    '5m',
-    '15m',
-    '1h',
-    '4h',
-    '12h',
-    '1d',
-    '3d',
-    '1w'
-  ];
+  const options = pairs.sort();
   const history = useHistory();
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const currentInterval = searchParams.get('interval');
+    const currentInterval = searchParams.get('symbol');
 
     if (selectedValue) {
-      searchParams.set('interval', selectedValue);
+      searchParams.set('symbol', selectedValue);
     } else if (currentInterval) {
       // keep the existing interval if it's set
-      searchParams.set('interval', currentInterval);
+      searchParams.set('symbol', currentInterval);
       setSelectedValue(currentInterval);
     } else {
       // default to '1d' if no interval is set
-      searchParams.set('interval', DEFAULT_INTERVAL);
-      setSelectedValue(DEFAULT_INTERVAL);
+      searchParams.set('symbol', DEFAULT_SYMBOL);
+      setSelectedValue(DEFAULT_SYMBOL);
     }
 
     history.replace({
@@ -48,7 +42,8 @@ export const IntervalSelector = () => {
           setSelectedValue(e.target.value);
         }}
       >
-        {options.map((option) => (
+        <input />
+        {options?.length > 0 && options?.map((option: any) => (
           <option key={option} value={option}>
             {option}
           </option>
