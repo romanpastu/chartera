@@ -1,25 +1,46 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
-  calcTopBody, drawCandle, drawLine, drawPriceLine, getColor, drawTimeLine, drawVolumeCandle, getChartRefPoints
+  calcTopBody,
+  drawCandle,
+  drawLine,
+  drawPriceLine,
+  getColor,
+  drawTimeLine,
+  drawVolumeCandle,
+  getChartRefPoints
 } from './ChartHelpers';
-import { BG_COLOR, CHART_RIGHT_MARGIN, FONT_COLOR, HORIZONTAL_PRICE_LINES, PRICE_LINES_COLOR, VERTICAL_PRICE_LINES } from './constants/constants';
+import {
+  BG_COLOR,
+  CHART_RIGHT_MARGIN,
+  FONT_COLOR,
+  HORIZONTAL_PRICE_LINES,
+  PRICE_LINES_COLOR,
+  VERTICAL_PRICE_LINES
+} from './constants/constants';
 import { DataObj } from '../ChartContainer/Helpers';
 
 interface IProps {
-  dataProp: Array<DataObj>,
-  bgColor?: string,
-  rightMarginProp?: number,
-  horizontalPriceLinesProp?: number,
-  verticalPriceLinesProp?: number,
-  PriceLineColorProp?: string,
-  fontColor?: string
+  dataProp: Array<DataObj>;
+  bgColor?: string;
+  rightMarginProp?: number;
+  horizontalPriceLinesProp?: number;
+  verticalPriceLinesProp?: number;
+  PriceLineColorProp?: string;
+  fontColor?: string;
 }
 
-const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BG_COLOR, rightMarginProp = CHART_RIGHT_MARGIN, horizontalPriceLinesProp = HORIZONTAL_PRICE_LINES, verticalPriceLinesProp = VERTICAL_PRICE_LINES, PriceLineColorProp = PRICE_LINES_COLOR, fontColor = FONT_COLOR }: IProps) {
+const Chart: React.FC<IProps> = ({
+  dataProp,
+  bgColor = BG_COLOR,
+  rightMarginProp = CHART_RIGHT_MARGIN,
+  horizontalPriceLinesProp = HORIZONTAL_PRICE_LINES,
+  verticalPriceLinesProp = VERTICAL_PRICE_LINES,
+  PriceLineColorProp = PRICE_LINES_COLOR,
+  fontColor = FONT_COLOR
+}: IProps) => {
   const [data] = useState<Array<DataObj>>(dataProp);
   const [candleWidth, setCandleWidth] = useState<number>();
-
-  const canvasRef = useRef(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas: HTMLCanvasElement = canvasRef.current!;
@@ -37,69 +58,81 @@ const Chart: React.FC<IProps> = function ({ dataProp, bgColor = BG_COLOR, rightM
     canvas.height = window.innerHeight;
 
     const {
-      // eslint-disable-next-line no-unused-vars
-      highestVal, lowestVal, maxTime, minTime, maxVolume // minVolume
+      highestVal,
+      lowestVal,
+      maxTime,
+      minTime,
+      maxVolume
     } = getChartRefPoints(data);
-
     /*
     The size of each unit of height
     To get sized based on   (price1-price2)*heightCubicles
     */
     const heightCubicles: number = highestVal && lowestVal ? context.canvas.height / (highestVal - lowestVal) : 0; // each price unit equals to unit * heightcubicles in canvas scale
-    // eslint-disable-next-line no-unused-vars
-    // const widthCubciles: number = maxTime && minTime ? context.canvas.width / (maxTime - minTime) : 0;
     context.fillStyle = bgColor;
     context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
     // Width is accumulated to distribute the candles horizontally
     let accumulatedWith: number = 0;
-
-    /* Draw horizontal lines */
-    if (data && highestVal && lowestVal) drawPriceLine(context, highestVal, lowestVal, horizontalPriceLinesProp, PriceLineColorProp, fontColor);
-
     let candlesToIgnore: number = 0;
-    if (candleWidth) candlesToIgnore = rightMarginProp / candleWidth;
 
-    /* Draw timestamp lines */
-    if (maxTime && minTime) drawTimeLine(context, maxTime, minTime, verticalPriceLinesProp, candlesToIgnore, rightMarginProp, PriceLineColorProp, fontColor);
-
-    // Draw the candles
-    data && data.length > 0 && data.filter((i, index) => index >= candlesToIgnore).forEach((i: DataObj, index: number) => {
-      // Width is accumulated only after the first candle has been drawn
-      if (index > 0 && candleWidth) {
-        accumulatedWith += candleWidth;
+    const drawHorizontalLines = () => {
+      if (data && highestVal && lowestVal) {
+        drawPriceLine(context, highestVal, lowestVal, horizontalPriceLinesProp, PriceLineColorProp, fontColor);
       }
-      if (candleWidth && highestVal) {
-        const bodyHeight: number = Math.abs((i.open - i.close) * heightCubicles);
-        const tailHeight: number = (i.high - i.low) * heightCubicles;
-        /* To draw the body of the candle */
-        drawCandle(
-          context,
-          accumulatedWith,
-          calcTopBody(
-            data[index - (candlesToIgnore + 1)]?.close,
-            i.open,
-            i.close,
-            heightCubicles,
-            highestVal
-          ),
-          candleWidth,
-          bodyHeight,
-          getColor(i.open, i.close)
-        );
+    };
 
-        /* To draw the tail of the candle */
-        const tailMarginLeft: number = accumulatedWith + (candleWidth / 2);
-        const tailMarginTop: number = (highestVal - i.high) * heightCubicles;
-        drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
-        /* draw the current price line */
-        if (index === data.filter((i, index) => index >= candlesToIgnore).length - 1) drawLine(context, tailMarginLeft, 0, 0, 0, '', true);
-        /* Draw volume candles */
-        if (maxVolume) drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height);
+    const drawTimestampLines = () => {
+      if (candleWidth) {
+        candlesToIgnore = rightMarginProp / candleWidth;
       }
-    });
-  }, [candleWidth, data, bgColor]);
+
+      if (maxTime && minTime && candleWidth) {
+        drawTimeLine(context, maxTime, minTime, verticalPriceLinesProp, candlesToIgnore, rightMarginProp, PriceLineColorProp, fontColor, candleWidth);
+      }
+    };
+
+    const drawCandles = () => {
+      data && data.length > 0 && data.filter((i, index) => index >= candlesToIgnore).forEach((i: DataObj, index: number) => {
+        // Width is accumulated only after the first candle has been drawn
+        if (index > 0 && candleWidth) {
+          accumulatedWith += candleWidth;
+        }
+        if (candleWidth && highestVal) {
+          const bodyHeight: number = Math.abs((i.open - i.close) * heightCubicles);
+          const tailHeight: number = (i.high - i.low) * heightCubicles;
+          /* To draw the body of the candle */
+          drawCandle(
+            context,
+            accumulatedWith,
+            calcTopBody(data[index - (candlesToIgnore + 1)]?.close, i.open, i.close, heightCubicles, highestVal),
+            candleWidth,
+            bodyHeight,
+            getColor(i.open, i.close)
+          );
+
+          /* To draw the tail of the candle */
+          const tailMarginLeft: number = accumulatedWith + (candleWidth / 2);
+          const tailMarginTop: number = (highestVal - i.high) * heightCubicles;
+          drawLine(context, tailMarginLeft, tailMarginTop, 1, tailHeight, getColor(i.open, i.close));
+          /* draw the current price line */
+          if (index === data.filter((i, index) => index >= candlesToIgnore).length - 1) {
+            drawLine(context, tailMarginLeft, 0, 0, 0, '', true);
+          }
+
+          if (maxVolume) {
+            drawVolumeCandle(context, accumulatedWith, i.open, i.close, i.volume, maxVolume, candleWidth, canvas.height);
+          }
+        }
+      });
+    };
+
+    drawHorizontalLines();
+    drawTimestampLines();
+    drawCandles();
+  }, [candleWidth, data, bgColor, horizontalPriceLinesProp, PriceLineColorProp, fontColor, rightMarginProp, verticalPriceLinesProp]);
 
   return <canvas ref={canvasRef} />;
 };
+
 export default Chart;

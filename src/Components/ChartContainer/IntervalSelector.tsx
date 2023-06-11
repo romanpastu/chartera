@@ -35,7 +35,7 @@ export const IntervalSelector = () => {
     history.replace({
       search: searchParams.toString()
     });
-  }, [selectedValue]);
+  }, [history, selectedValue]);
   return (
     <>
       <select

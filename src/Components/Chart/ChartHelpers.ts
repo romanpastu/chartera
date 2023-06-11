@@ -109,7 +109,7 @@ export const drawPriceLine = (ctx: any, highestVal: number, lowestVal: number, n
   for (let i: number = 0; i <= numberOfLines + 1; i++) {
     const price: number = (lowestVal) + ((heightPoints * i) * ((highestVal - lowestVal) / ctx.canvas.height));
     priceList.push(price);
-    // console.log("price[" + i + "] " + (minLow + (prices * i)))
+    // console.log('price[' + i + '] ' + (minLow + (prices * i)));
     ctx.beginPath();
     ctx.moveTo(0, (heightPoints * i));
     ctx.lineTo(ctx.canvas.width, (heightPoints * i));
@@ -138,9 +138,12 @@ export const drawTimeFonts = (timeList: Array<number>, ctx: any, widthPoints: nu
 };
 
 /* Draws the vertical time lines */
-export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberOfLines: number, skippedDays: number, rightMarginProp: number, color: string, fontColor: string): void => {
+export const drawTimeLine = (ctx: any, maxTime: number, minTime: number, numberOfLines: number, skippedDays: number, rightMarginProp: number, color: string, fontColor: string, candleWidth: number): void => {
   const widthPoints: number = ctx.canvas.width / (numberOfLines + 1);
   const timeList: Array<number> = [];
+
+  // TO-DO: First line and last line should not be drawn.
+  /* When being at 1d , the widthPoints*1 , states the beginnign of the position, but its not taking into account the width of candle ctx.moveTo((widthPoints * i) + (candleWidth/2), 0); */
 
   // Draws the lines
   for (let i = 0; i <= numberOfLines + 1; i++) {
